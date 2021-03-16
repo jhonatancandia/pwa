@@ -6,7 +6,8 @@ if (navigator.serviceWorker) {
     if(url.includes('localhost')) {
         swLocation = '/sw.js';
     }
-
+    
+    console.log(swLocation);
     navigator.serviceWorker.register(swLocation);
 }
 
