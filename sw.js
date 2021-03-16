@@ -30,10 +30,10 @@ const APP_SHELL_INMUTABLE = [
 self.addEventListener('install', event => {
     const cacheStatic = caches.open(CACHE_STATIC).then(cache => {
         cache.addAll(APP_SHELL);
-    });
+    }).catch(err => console.log('Aqui ocurrio el error: STATIC', err));
     const cacheInmutable = caches.open(CACHE_INMUTABLE).then(cache => {
         cache.addAll(APP_SHELL_INMUTABLE);
-    });
+    }).catch(err => console.log('Aqui ocurrio el error INMUTABLE', err));
 
     event.waitUntil(Promise.all([
         cacheStatic,
