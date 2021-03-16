@@ -47,18 +47,17 @@ self.addEventListener('activate', event => {
             }
         });
     });
-    
+
     event.waitUntil(deleteCaches);
 });
 
 self.addEventListener('fetch', event => {
     const promiseResponse = caches.match(event.request).then(response => {
         if (response) return response;
-        else {
-            return fetch(event.request).then(fetchResponse => {
-                return updateDynamicCache(CACHE_DYNAMIC, event.request, fetchResponse)
-            });
-        }
+        
+        return fetch(event.request).then(fetchResponse => {
+            return updateDynamicCache(CACHE_DYNAMIC, event.request, fetchResponse)
+        });
     });
 
     event.respondWith(promiseResponse);
