@@ -14,7 +14,8 @@ const APP_SHELL = [
     '/img/avatars/spiderman.jpg',
     '/img/avatars/thor.jpg',
     '/img/avatars/wolverine.jpg',
-    '/js/app.js'
+    '/js/app.js',
+    '/js/sw-utils.js'
 ];
 
 const APP_SHELL_INMUTABLE = [
@@ -27,10 +28,10 @@ const APP_SHELL_INMUTABLE = [
 
 self.addEventListener('install', event => {
     const cacheStatic = caches.open(CACHE_STATIC).then(cache => {
-        return cache.addAll(APP_SHELL);
+        cache.addAll(APP_SHELL);
     });
     const cacheInmutable = caches.open(CACHE_INMUTABLE).then(cache => {
-        return cache.addAll(APP_SHELL_INMUTABLE);
+        cache.addAll(APP_SHELL_INMUTABLE);
     });
 
     event.waitUntil(Promise.all([
@@ -43,6 +44,10 @@ self.addEventListener('activate', event => {
     const deleteCaches = caches.keys().then(keys => {
         keys.forEach(key => {
             if (key !== CACHE_STATIC && key.includes('static')) {
+                return caches.delete(key);
+            }
+            
+            if (  key !== CACHE_DYNAMIC && key.includes('dynamic') ) {
                 return caches.delete(key);
             }
         });
